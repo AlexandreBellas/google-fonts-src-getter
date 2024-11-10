@@ -40,6 +40,12 @@ the API URL to get the `@font-face` code, parses it, and returns the `src` that 
 
 ## How to use
 
+Install it with:
+
+```bash
+npm i google-fonts-src-getter
+```
+
 You can easily call the library by importing the function `getGoogleFontData` with your desired fonts:
 
 ```ts

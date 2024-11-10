@@ -35,8 +35,8 @@ to be downloaded.
 Whenever I'd need this `src` attribute dynamically in my JS code, I found myself calling the Google Fonts API by hand,
 copying, and pasting the URL in the configurations file I've worked on. It was a pain in the ass.
 
-In this way, it comes `google-fonts-src-getter`: by defining the fonts you want to get the `src` attribute, it build the
-API URL to get the `@font-face` code, parses it, and returns the `src` that relies in it. Simples as that!
+In this way, it comes `google-fonts-src-getter`: by defining the fonts you want to get the `src` attribute, it builds
+the API URL to get the `@font-face` code, parses it, and returns the `src` that relies in it. Simples as that!
 
 ## How to use
 

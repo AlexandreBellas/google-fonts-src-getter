@@ -1,6 +1,6 @@
 {
   "name": "google-fonts-src-getter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A getter of the src attribute when querying the Google Fonts API.",
   "main": "lib/index.js",
   "files": [

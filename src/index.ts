@@ -1,41 +1,41 @@
-// import { IGoogleFontRequest, IGoogleFontResponse } from "./@types/google-fonts"
-// import { dropFontsArrayDuplicates } from "./utils/drop-fonts-array-duplicates"
+import { IGoogleFontRequest, IGoogleFontResponse } from './@types/google-fonts'
+import { buildGoogleFontsUrl } from './functions/build-google-fonts-url'
+import { parseResponse } from './functions/parse-response'
+import { parseGoogleFontRequestFonts } from './utils/parse-fonts-input'
+import { parsePrimitiveInputToArr } from './utils/parse-primitive-input'
 
 /**
- * Achieve something like:
- * https://fonts.googleapis.com/css2?family=Font+1:ital,wght@0,400;0,500;1,400;1,900
- * &family=Font2:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap
+ * Gets the data related to a google font in a plain JS object.
  *
  * @see https://developers.google.com/fonts/docs/getting_started
  */
-// export async function getGoogleFontData({
-//     fonts,
-//     display,
-//     subset,
-//     text
-// }: Readonly<IGoogleFontRequest>): Promise<IGoogleFontResponse> {
-//     const baseUrl = "https://fonts.googleapis.com/css2"
-//     const actualFonts = Array.isArray(fonts) ? dropFontsArrayDuplicates(fonts) : [fonts]
+export async function getGoogleFontData({
+    fonts,
+    display,
+    subset,
+    text
+}: Readonly<IGoogleFontRequest>): Promise<IGoogleFontResponse> {
+    const actualFonts = parseGoogleFontRequestFonts(fonts)
 
-//     try {
-//         const objUrl = new URL(baseUrl)
+    if (actualFonts.length === 0) return { fonts: [], url: "" }
 
-//         actualFonts.forEach(font => {
-//             const parsedFamily = font.family.split(" ").join("+")
-//             const parsedStyleAndWeights = ["0", "1"].map(
-//                 italValue => font.weight.map(weight => `${italValue},${weight}`)
-//             ).flat().join(";")
+    const actualDisplay = display ? parsePrimitiveInputToArr(display) : undefined
+    const actualSubset = subset ? parsePrimitiveInputToArr(subset) : undefined
+    const actualText = text
 
-//             const queryParamValue = `${parsedFamily}:ital,wght@${parsedStyleAndWeights}`
+    try {
+        const url = buildGoogleFontsUrl({
+            fonts: actualFonts,
+            display: actualDisplay,
+            subset: actualSubset,
+            text: actualText
+        })
 
-//             objUrl.searchParams.append("family", queryParamValue)
+        const responseObj = await fetch(url, { method: 'GET' })
+        const responseRawString = await responseObj.text()
 
-//         })
-
-//         console.log(objUrl.toString())
-
-//         return []
-//     } catch (e) {
-//         return []
-//     }
-// }
+        return { fonts: parseResponse(responseRawString), url }
+    } catch (_) {
+        return { fonts: [], url: "" }
+    }
+}

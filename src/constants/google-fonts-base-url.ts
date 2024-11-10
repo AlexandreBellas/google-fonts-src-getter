@@ -1,0 +1,1 @@
+export const googleFontsBaseUrl = "https://fonts.googleapis.com/css2"
